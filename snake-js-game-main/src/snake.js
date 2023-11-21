@@ -9,5 +9,15 @@ class snake{
         this.y = _y
     }
 
+    extendSnake(){
+        
+    }
 
+    moveSnake(){
+        
+    }
+
+    isSnakeAlive(){
+
+    }
 }
