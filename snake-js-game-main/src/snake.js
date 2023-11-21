@@ -1,23 +1,19 @@
 import '../css/style.css';
 
-const SNAKE_WIDTH = 50;
-const SNAKE_HEIGHT = 50;
-
-class snake{
-    constructor(x, y){
-        this.x = _x, 
-        this.y = _y
+export class snakeClass{
+    constructor(x, y, width, height){
+        this._x = x, 
+        this._y = y,
+        this._width = width,
+        this._height = height
     }
 
-    extendSnake(){
-        
+    getX(){
+        return this._x;
     }
 
-    moveSnake(){
-        
+    getY(){
+        return this._y;
     }
-
-    isSnakeAlive(){
-
-    }
+    
 }
