@@ -1,10 +1,8 @@
 import '../css/style.css';
-import {snakeClass} from './snake';
 
 // Reprend le canvas présent dans l'html
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
-
 
 // Constantes sur de certaines informations sur le jeux
 const SQUARE_WIDTH = 16;
@@ -25,9 +23,11 @@ const TABLE_COLOR= 'black';
 const gameOver = document.querySelector(".GameOver");
 
 // Variables pour les coordonnées
+// Snake
 let coordX = 100;
 let coordY = 300;
 
+// Apple
 let appleX = 0;
 let appleY = 0;
 
@@ -41,7 +41,7 @@ let didAMovement = false;
 // Variable qui dit si le serpent est mort
 let isSnakeAlive = true;
 
-// Variable 
+// Variable pour savoir si une pomme est présente dans le programme
 let isAppleAlive = false;
 
 // Tableau des valeurs des carrés qui représentent le snake
@@ -64,8 +64,10 @@ let partOfTheSnake = [{
        }];
 
 function move() {
-
+  // Fait tous les events du jeu
   events();
+
+  // Si le serpent est mort on affiche le gameover
   if (!isSnakeAlive) {
     gameOver.textContent = "GameOver";
     return;
@@ -190,8 +192,9 @@ function events(){
       w : SNAKE_WIDTH,
       h : SNAKE_HEIGHT
     });
+    isAppleAlive = false;
   }
-  console.log("The snake ate the apple")
+  
 }
 
 function appleSpawn(){
