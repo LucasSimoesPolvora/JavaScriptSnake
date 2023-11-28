@@ -13,8 +13,13 @@ const PLAY_TABLE_WIDTH = canvas.width
 const PLAY_TABLE_HEIGHT = canvas.height
 const SNAKE_WIDTH = PLAY_TABLE_WIDTH / SQUARE_WIDTH;
 const SNAKE_HEIGHT = PLAY_TABLE_HEIGHT / SQUARE_HEIGHT;
+const APPLE_WIDTH = SNAKE_WIDTH;
+const APPLE_HEIGHT = SNAKE_HEIGHT;
 
+// Constantes sur les couleurs des objets
 const SNAKE_COLOR = 'blue';
+const APPLE_COLOR = 'red';
+const TABLE_COLOR= 'black';
 
 // Constante qui reprend la balise <p> dans l'html avec la classe .GameOver
 const gameOver = document.querySelector(".GameOver");
@@ -22,6 +27,9 @@ const gameOver = document.querySelector(".GameOver");
 // Variables pour les coordonnées
 let coordX = 100;
 let coordY = 300;
+
+let appleX = 0;
+let appleY = 0;
 
 // Variables bool pour le mouvemement
 let goRight = false;
@@ -31,7 +39,10 @@ let goDown = false;
 let didAMovement = false;
 
 // Variable qui dit si le serpent est mort
-let isSnakeAlive = true
+let isSnakeAlive = true;
+
+// Variable 
+let isAppleAlive = false;
 
 // Tableau des valeurs des carrés qui représentent le snake
 let partOfTheSnake = [{
@@ -52,44 +63,49 @@ let partOfTheSnake = [{
         h : SNAKE_HEIGHT
        }];
 
-const move = () => {
-  isSnakeStillAlive();
-  if(!isSnakeAlive){
+function move() {
+
+  events();
+  if (!isSnakeAlive) {
     gameOver.textContent = "GameOver";
     return;
   }
-  
+
   // Dessine la grille de jeu
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = TABLE_COLOR;
   ctx.fillRect(0, 0, PLAY_TABLE_WIDTH, PLAY_TABLE_HEIGHT);
+
+  // Reads the input from the user
   readInput();
 
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(partOfTheSnake[0].x, partOfTheSnake[0].y, SNAKE_WIDTH, SNAKE_HEIGHT);
-  console.log(partOfTheSnake[0].x);
+  // Makes the apple spawn
+  appleSpawn();
 
-  draw();
-  Movement();
+  // Draws and updates the snake movement
+  drawSnake();
 
-  // Rafraichit à chaque seconde
+  // Rafraichit à chaque 100ms
   setTimeout(() => {
     requestAnimationFrame(move);
   }, 100);
-
-
-};
+}
 
 requestAnimationFrame(move);
 
-function draw(){
+// Dessine et bouge le snake
+function drawSnake(){
+
+  // Affiche la tête du serpent
+  ctx.fillStyle = SNAKE_COLOR;
+  ctx.fillRect(partOfTheSnake[0].x, partOfTheSnake[0].y, SNAKE_WIDTH, SNAKE_HEIGHT);
+
+  // Affiche le corps du serpent
   ctx.fillstyle = SNAKE_COLOR;
   for(let i = 0; i < partOfTheSnake.length; i++){
     ctx.fillRect(partOfTheSnake[i].x, partOfTheSnake[i].y, SNAKE_WIDTH, SNAKE_HEIGHT)
   }
-}
 
-function Movement() {
-  
+  // Fait le mouvement du snake en fonction de l'input de l'utilisateur
   if (goUp && coordY > - 10) {
     coordY -= SNAKE_HEIGHT;
   }
@@ -102,6 +118,8 @@ function Movement() {
   else if (goLeft && coordX > -10) {
     coordX -= SNAKE_WIDTH;
   }
+
+  // Si le serpent fait un mouvement on enlève la queue et ensuite on replace une tête à l'avant
   if(didAMovement){
     partOfTheSnake.pop();
     partOfTheSnake.unshift({
@@ -147,7 +165,8 @@ function readInput() {
   }, false)
 }
 
-function isSnakeStillAlive(){
+function events(){
+  // Events pour savoir si le serpent est mort
   if(coordX >= PLAY_TABLE_WIDTH){
     isSnakeAlive = false
   }
@@ -164,8 +183,27 @@ function isSnakeStillAlive(){
     isSnakeAlive = false
   }
 
+  if(appleX == coordX && appleY == coordY){
+    partOfTheSnake.unshift({
+      x : coordX,
+      y : coordY,
+      w : SNAKE_WIDTH,
+      h : SNAKE_HEIGHT
+    });
+  }
+  console.log("The snake ate the apple")
 }
 
 function appleSpawn(){
-  Math.floor(Math.random() * PLA);
+  if(!isAppleAlive){
+    appleX = Math.floor(Math.random() * SQUARE_WIDTH);
+    appleY = Math.floor(Math.random() * SQUARE_HEIGHT);
+    isAppleAlive = true;
+    appleX = appleX*SNAKE_WIDTH
+    appleY = appleY*SNAKE_HEIGHT
+  }  
+
+  // Affiche la pomme
+  ctx.fillStyle = "red"
+  ctx.fillRect(appleX,appleY,SNAKE_WIDTH,SNAKE_HEIGHT)
 }
