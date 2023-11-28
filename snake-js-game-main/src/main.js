@@ -5,11 +5,15 @@ import {snakeClass} from './snake';
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+
 // Constantes sur de certaines informations sur le jeux
-const SNAKE_WIDTH = 50;
-const SNAKE_HEIGHT = 50;
-const PLAY_TABLE_HEIGHT = 800;
-const PLAY_TABLE_WIDTH = 800;
+const SQUARE_WIDTH = 16;
+const SQUARE_HEIGHT = 16;
+const PLAY_TABLE_WIDTH = canvas.width
+const PLAY_TABLE_HEIGHT = canvas.height
+const SNAKE_WIDTH = PLAY_TABLE_WIDTH / SQUARE_WIDTH;
+const SNAKE_HEIGHT = PLAY_TABLE_HEIGHT / SQUARE_HEIGHT;
+
 const SNAKE_COLOR = 'blue';
 
 // Constante qui reprend la balise <p> dans l'html avec la classe .GameOver
@@ -55,24 +59,14 @@ const move = () => {
     return;
   }
   
-
   // Dessine la grille de jeu
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, PLAY_TABLE_WIDTH, PLAY_TABLE_HEIGHT);
   readInput();
 
-  
   ctx.fillStyle = 'blue';
-  // Il marche
-  //ctx.fillRect(coordX, coordY, SNAKE_WIDTH, SNAKE_HEIGHT)
   ctx.fillRect(partOfTheSnake[0].x, partOfTheSnake[0].y, SNAKE_WIDTH, SNAKE_HEIGHT);
   console.log(partOfTheSnake[0].x);
-
-  // il ne marche pas
-  // ctx.fillstyle = 'blue';
-  // for(let i = 0; i < partOfTheSnake.length; i++){
-  //   ctx.fillRect(partOfTheSnake[i].x, partOfTheSnake[i].y, SNAKE_WIDTH, SNAKE_HEIGHT)
-  // }
 
   draw();
   Movement();
@@ -169,4 +163,9 @@ function isSnakeStillAlive(){
   else if (coordY >= PLAY_TABLE_HEIGHT){
     isSnakeAlive = false
   }
+
+}
+
+function appleSpawn(){
+  Math.floor(Math.random() * PLA);
 }
