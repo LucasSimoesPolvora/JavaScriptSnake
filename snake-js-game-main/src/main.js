@@ -38,6 +38,8 @@ let goUp = false;
 let goDown = false;
 let didAMovement = false;
 
+let compteur = 0;
+
 // Variable qui dit si le serpent est mort
 let isSnakeAlive = true;
 
@@ -85,6 +87,11 @@ function move() {
 
   // Draws and updates the snake movement
   drawSnake();
+  for(let i = 1; i < partOfTheSnake.length; i++){
+  if(partOfTheSnake[0].x === partOfTheSnake[i].x && partOfTheSnake[0].y === partOfTheSnake[i].y){
+    console.log("al")
+  }
+}
 
   // Rafraichit à chaque 100ms
   setTimeout(() => {
@@ -168,7 +175,7 @@ function readInput() {
 }
 
 function events(){
-  // Events pour savoir si le serpent est mort
+  // Even that allows to know if the snake is dead
   if(coordX >= PLAY_TABLE_WIDTH){
     isSnakeAlive = false
   }
@@ -184,7 +191,17 @@ function events(){
   else if (coordY >= PLAY_TABLE_HEIGHT){
     isSnakeAlive = false
   }
+  
+   for(let i = 1; i < partOfTheSnake.length; i++){
+     if(partOfTheSnake[0].x === partOfTheSnake[i].x && partOfTheSnake[0].y === partOfTheSnake[i].y){
+      compteur ++;
+      if(compteur != 1){
+        isSnakeAlive = false;
+      }
+     }
+   }
 
+  // Event that allows the snake to eat the apple
   if(appleX == coordX && appleY == coordY){
     partOfTheSnake.unshift({
       x : coordX,
