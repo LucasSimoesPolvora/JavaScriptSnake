@@ -87,11 +87,6 @@ function move() {
 
   // Draws and updates the snake movement
   drawSnake();
-  for(let i = 1; i < partOfTheSnake.length; i++){
-  if(partOfTheSnake[0].x === partOfTheSnake[i].x && partOfTheSnake[0].y === partOfTheSnake[i].y){
-    console.log("al")
-  }
-}
 
   // Rafraichit à chaque 100ms
   setTimeout(() => {
@@ -218,6 +213,12 @@ function appleSpawn(){
   if(!isAppleAlive){
     appleX = Math.floor(Math.random() * SQUARE_WIDTH);
     appleY = Math.floor(Math.random() * SQUARE_HEIGHT);
+    // Si elle spawn dans le serpent on refait
+    for(let i = 1; i < partOfTheSnake.length; i++){
+      if(appleX === partOfTheSnake[i].x && appleY === partOfTheSnake[i].y){
+         appleSpawn();
+      }
+    }
     isAppleAlive = true;
     appleX = appleX*SNAKE_WIDTH
     appleY = appleY*SNAKE_HEIGHT
