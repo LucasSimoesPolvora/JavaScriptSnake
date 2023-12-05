@@ -235,12 +235,6 @@ function appleSpawn(){
     appleX = Math.floor(Math.random() * SQUARE_WIDTH);
     appleY = Math.floor(Math.random() * SQUARE_HEIGHT);
     // If the apple spawns in a square that's already occupied by the snake, we spawn it again
-    for(let i = 1; i < partOfTheSnake.length; i++){
-      if(appleX === partOfTheSnake[i].x && appleY === partOfTheSnake[i].y){
-         appleSpawn();
-      }
-    }
-
     if (partOfTheSnake.some(segment => appleX === segment.x && appleY === segment.y)) {
       appleSpawn();
    }
@@ -248,11 +242,11 @@ function appleSpawn(){
     isAppleAlive = true;
 
     // Makes the width and the ehight of the apple
-    appleX = appleX*SNAKE_WIDTH
-    appleY = appleY*SNAKE_HEIGHT
+    appleX = appleX*APPLE_WIDTH
+    appleY = appleY*APPLE_HEIGHT
   }  
 
   // Affiche la pomme
   ctx.fillStyle = APPLE_COLOR
-  ctx.fillRect(appleX,appleY,SNAKE_WIDTH,SNAKE_HEIGHT)
+  ctx.fillRect(appleX,appleY,APPLE_WIDTH,APPLE_HEIGHT)
 }
