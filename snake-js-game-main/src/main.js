@@ -21,6 +21,7 @@ const TABLE_COLOR= 'black';
 
 // Constante qui reprend la balise <p> dans l'html avec la classe .GameOver
 const gameOver = document.querySelector(".GameOver");
+const score = document.querySelector(".Score")
 
 // Variables pour les coordonnées
 // Snake
@@ -45,6 +46,8 @@ let isSnakeAlive = true;
 
 // Variable pour savoir si une pomme est présente dans le programme
 let isAppleAlive = false;
+
+let scoreValue = 0;
 
 // Tableau des valeurs des carrés qui représentent le snake
 let partOfTheSnake = [{
@@ -74,6 +77,8 @@ function move() {
     gameOver.textContent = "GameOver";
     return;
   }
+
+  score.textContent="Score : " + scoreValue
 
   // Dessine la grille de jeu
   ctx.fillStyle = TABLE_COLOR;
@@ -137,6 +142,7 @@ function drawSnake(){
 
 function readInput() {
   document.addEventListener('keydown', function (event) {
+
     if (event.keyCode == 37 && !goRight && didAMovement) {
       goLeft = true;
       goDown = false;
@@ -170,7 +176,7 @@ function readInput() {
 }
 
 function events(){
-  // Even that allows to know if the snake is dead
+  // Event that allows to know if the snake is dead
   if(coordX >= PLAY_TABLE_WIDTH){
     isSnakeAlive = false
   }
@@ -186,15 +192,13 @@ function events(){
   else if (coordY >= PLAY_TABLE_HEIGHT){
     isSnakeAlive = false
   }
-  
-   for(let i = 1; i < partOfTheSnake.length; i++){
-     if(partOfTheSnake[0].x === partOfTheSnake[i].x && partOfTheSnake[0].y === partOfTheSnake[i].y){
-      compteur ++;
-      if(compteur != 1){
+   
+  if (partOfTheSnake.some((segment, index) => index !== 0 && segment.x === partOfTheSnake[0].x && segment.y === partOfTheSnake[0].y)) {
+    compteur++;
+    if (compteur !== 1) {
         isSnakeAlive = false;
-      }
-     }
-   }
+    }
+}
 
   // Event that allows the snake to eat the apple
   if(appleX == coordX && appleY == coordY){
@@ -205,6 +209,7 @@ function events(){
       h : SNAKE_HEIGHT
     });
     isAppleAlive = false;
+    scoreValue++;
   }
   
 }

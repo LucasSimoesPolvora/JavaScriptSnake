@@ -25,3 +25,10 @@ canvas {
   color: white;
   font-size: 4cm;
 }
+
+.Score{
+  color: white;
+  font-size: 300%;
+  position: absolute;
+  padding-bottom: 45%;
+}
