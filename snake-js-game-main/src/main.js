@@ -75,7 +75,12 @@ function move() {
 
   // If the snake is dead it will show GameOver
   if (!isSnakeAlive) {
-    gameOver.textContent = "GameOver";
+    if(scoreValue <= SQUARE_HEIGHT * SQUARE_WIDTH - 3){
+      gameOver.textContent = "GameOver";
+    }
+    else{
+      gameOver.textContent = "You Win !";
+    }
     return;
   }
 
@@ -235,6 +240,10 @@ function appleSpawn(){
          appleSpawn();
       }
     }
+
+    if (partOfTheSnake.some(segment => appleX === segment.x && appleY === segment.y)) {
+      appleSpawn();
+   }
     // Resets value
     isAppleAlive = true;
 
@@ -244,6 +253,6 @@ function appleSpawn(){
   }  
 
   // Affiche la pomme
-  ctx.fillStyle = "red"
+  ctx.fillStyle = APPLE_COLOR
   ctx.fillRect(appleX,appleY,SNAKE_WIDTH,SNAKE_HEIGHT)
 }
