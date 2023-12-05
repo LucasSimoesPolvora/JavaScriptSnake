@@ -245,8 +245,7 @@ function appleSpawn(){
     appleX = appleX*APPLE_WIDTH
     appleY = appleY*APPLE_HEIGHT
   }  
-
-  // Affiche la pomme
+  // Shows the apple
   ctx.fillStyle = APPLE_COLOR
   ctx.fillRect(appleX,appleY,APPLE_WIDTH,APPLE_HEIGHT)
 }
