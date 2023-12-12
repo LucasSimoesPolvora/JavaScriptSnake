@@ -17,7 +17,7 @@ const APPLE_HEIGHT = SNAKE_HEIGHT;
 // Consts about the colors of the game
 const SNAKE_COLOR = 'blue';
 const APPLE_COLOR = 'red';
-const TABLE_COLOR= 'black';
+const TABLE_COLOR = 'black';
 
 // Consts that take the classes .GameOver and .Score so that we can modify them
 const gameOver = document.querySelector(".GameOver");
@@ -52,22 +52,22 @@ let scoreValue = 0;
 
 // Array that has the values of the snake
 let partOfTheSnake = [{
-        x : coordX,
-        y : coordY,
-        w : SNAKE_WIDTH,
-        h : SNAKE_HEIGHT
-      },
-      {
-        x : coordX + SNAKE_WIDTH,
-        y : coordY,
-        w : SNAKE_WIDTH,
-        h : SNAKE_HEIGHT
-      },{
-        x : coordX + SNAKE_WIDTH * 2,
-        y : coordY,
-        w : SNAKE_WIDTH,
-        h : SNAKE_HEIGHT
-       }];
+  x: coordX,
+  y: coordY,
+  w: SNAKE_WIDTH,
+  h: SNAKE_HEIGHT
+},
+{
+  x: coordX + SNAKE_WIDTH,
+  y: coordY,
+  w: SNAKE_WIDTH,
+  h: SNAKE_HEIGHT
+}, {
+  x: coordX + SNAKE_WIDTH * 2,
+  y: coordY,
+  w: SNAKE_WIDTH,
+  h: SNAKE_HEIGHT
+}];
 
 function move() {
   // Makes all the events of the game
@@ -75,17 +75,17 @@ function move() {
 
   // If the snake is dead it will show GameOver
   if (!isSnakeAlive) {
-    if(scoreValue <= SQUARE_HEIGHT * SQUARE_WIDTH - 3){
+    if (scoreValue <= SQUARE_HEIGHT * SQUARE_WIDTH - 3) {
       gameOver.textContent = "GameOver";
     }
-    else{
+    else {
       gameOver.textContent = "You Win !";
     }
     return;
   }
 
   // Shows the current score
-  score.textContent="Score : " + scoreValue
+  score.textContent = "Score : " + scoreValue
 
   // Draws the game board
   ctx.fillStyle = TABLE_COLOR;
@@ -104,21 +104,18 @@ function move() {
   setTimeout(() => {
     requestAnimationFrame(move);
   }, 100);
+  canMove = true;
 }
 
 requestAnimationFrame(move);
 
 // Draws and moves the snake
-function drawSnake(){
+function drawSnake() {
   // Draws the snake's head
   ctx.fillStyle = SNAKE_COLOR;
-  ctx.fillRect(partOfTheSnake[0].x, partOfTheSnake[0].y, SNAKE_WIDTH, SNAKE_HEIGHT);
-
-  // Draws the snake's body
-  ctx.fillstyle = SNAKE_COLOR;
-  for(let i = 0; i < partOfTheSnake.length; i++){
-    ctx.fillRect(partOfTheSnake[i].x, partOfTheSnake[i].y, SNAKE_WIDTH, SNAKE_HEIGHT)
-  }
+  partOfTheSnake.some(v => {
+    ctx.fillRect(v.x, v.y, v.w, v.h)
+  })
 
   // Makes the movement according to the input 
   if (goUp && coordY > - 10) {
@@ -135,13 +132,13 @@ function drawSnake(){
   }
 
   // If the snake makes a movement, it unshows the last square (tail) and puts it in front (Becomes the head)
-  if(didAMovement){
+  if (didAMovement) {
     partOfTheSnake.pop();
     partOfTheSnake.unshift({
-      x : coordX,
-      y : coordY,
-      w : SNAKE_WIDTH,
-      h : SNAKE_HEIGHT
+      x: coordX,
+      y: coordY,
+      w: SNAKE_WIDTH,
+      h: SNAKE_HEIGHT
     });
   }
 }
@@ -182,71 +179,72 @@ function readInput() {
       goRight = false;
       didAMovement = true;
     }
-
   }, false)
 }
 
 // Treats the different events that occur in the game (Snake dies, eats apple)
-function events(){
+function events() {
   // Events that allows to know if the snake is dead by the borders
   // Right Border
-  if(coordX >= PLAY_TABLE_WIDTH){
+  if (coordX >= PLAY_TABLE_WIDTH) {
     isSnakeAlive = false
   }
   // Left Border
-  else if(coordX < 0){
+  else if (coordX < 0) {
     isSnakeAlive = false
   }
   // Top Border
-  else if(coordY < 0){
+  else if (coordY < 0) {
     isSnakeAlive = false
   }
   // Down Border
-  else if (coordY >= PLAY_TABLE_HEIGHT){
+  else if (coordY >= PLAY_TABLE_HEIGHT) {
     isSnakeAlive = false
   }
-  
+
   // If the snakes touches himself he dies
   if (partOfTheSnake.some((segment, index) => index !== 0 && segment.x === partOfTheSnake[0].x && segment.y === partOfTheSnake[0].y)) {
     compteur++;
     if (compteur !== 1) {
-        isSnakeAlive = false;
+      isSnakeAlive = false;
     }
-}
+  }
 
   // Event that allows the snake to eat the apple
-  if(appleX == coordX && appleY == coordY){
+  if (appleX == coordX && appleY == coordY) {
     partOfTheSnake.unshift({
-      x : coordX,
-      y : coordY,
-      w : SNAKE_WIDTH,
-      h : SNAKE_HEIGHT
+      x: coordX,
+      y: coordY,
+      w: SNAKE_WIDTH,
+      h: SNAKE_HEIGHT
     });
     isAppleAlive = false;
     scoreValue++;
   }
-  
+
 }
 
 // Makes the apple spawn
-function appleSpawn(){
-  if(!isAppleAlive){
-    // Makes random numbers
+function appleSpawn() {
+  if (!isAppleAlive) {
+    // Makes random numbers for the square that the apple will spawn
     appleX = Math.floor(Math.random() * SQUARE_WIDTH);
     appleY = Math.floor(Math.random() * SQUARE_HEIGHT);
+
+    // Makes the width and the ehight of the apple
+    appleX = appleX * APPLE_WIDTH;
+    appleY = appleY * APPLE_HEIGHT;
+
     // If the apple spawns in a square that's already occupied by the snake, we spawn it again
-    if (partOfTheSnake.some(segment => appleX == segment.x && appleY == segment.y)) {
+    if (partOfTheSnake.some((segment) => appleX == segment.x && appleY == segment.y)) {
+      console.log("a");
       appleSpawn();
-   }
+    }
 
     // Resets value
     isAppleAlive = true;
-
-    // Makes the width and the ehight of the apple
-    appleX = appleX*APPLE_WIDTH
-    appleY = appleY*APPLE_HEIGHT
-  }  
+  }
   // Shows the apple
   ctx.fillStyle = APPLE_COLOR
-  ctx.fillRect(appleX,appleY,APPLE_WIDTH,APPLE_HEIGHT)
+  ctx.fillRect(appleX, appleY, APPLE_WIDTH, APPLE_HEIGHT)
 }
