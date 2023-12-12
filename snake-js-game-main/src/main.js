@@ -104,7 +104,6 @@ function move() {
   setTimeout(() => {
     requestAnimationFrame(move);
   }, 100);
-  canMove = true;
 }
 
 requestAnimationFrame(move);
@@ -221,7 +220,6 @@ function events() {
     isAppleAlive = false;
     scoreValue++;
   }
-
 }
 
 // Makes the apple spawn
