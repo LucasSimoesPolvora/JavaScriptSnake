@@ -5,8 +5,8 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 // Consts about some of the game information
-const SQUARE_WIDTH = 16;
-const SQUARE_HEIGHT = 16;
+const SQUARE_WIDTH = 16;              // Only works with 8, 16, 32
+const SQUARE_HEIGHT = 16;             // Only works with 8, 16, 32
 const PLAY_TABLE_WIDTH = canvas.width
 const PLAY_TABLE_HEIGHT = canvas.height
 const SNAKE_WIDTH = PLAY_TABLE_WIDTH / SQUARE_WIDTH;
@@ -235,9 +235,10 @@ function appleSpawn(){
     appleX = Math.floor(Math.random() * SQUARE_WIDTH);
     appleY = Math.floor(Math.random() * SQUARE_HEIGHT);
     // If the apple spawns in a square that's already occupied by the snake, we spawn it again
-    if (partOfTheSnake.some(segment => appleX === segment.x && appleY === segment.y)) {
+    if (partOfTheSnake.some(segment => appleX == segment.x && appleY == segment.y)) {
       appleSpawn();
    }
+
     // Resets value
     isAppleAlive = true;
 
